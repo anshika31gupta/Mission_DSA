@@ -41,7 +41,7 @@ Graphs | No |
 ## 💻 Languages Used
 
 - C++
-- Java
+- python
 - Kotlin (occasionally)
 
 ---
