@@ -11,15 +11,15 @@ My goal is to strengthen **problem-solving skills** and improve my **algorithmic
 
 | Topic | Problems Solved |
 |------|----------------|
-Arrays |  |
-Strings |  |
-Linked List |  |
-Stack |  |
-Queue |  |
-Recursion |  |
-Dynamic Programming |  |
-Trees |  |
-Graphs |  |
+Arrays | yes |
+Strings |yes  |
+Linked List | yes |
+Stack | yes |
+Queue | yes |
+Recursion | yes |
+Dynamic Programming | started |
+Trees | yes |
+Graphs | No |
 
 ---
 
