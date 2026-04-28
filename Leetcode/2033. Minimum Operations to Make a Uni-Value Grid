@@ -1,0 +1,135 @@
+# 2033. Minimum Operations to Make a Uni-Value Grid
+
+**Difficulty:** Medium
+**Topic:** Array, Math, Sorting
+**Date:** April 2026
+**Status:** ✅ Solved
+
+---
+
+## Problem Summary
+2D grid diya hai aur ek integer x. Ek operation mein kisi bhi
+element mein x add ya subtract kar sakte ho.
+Minimum operations return karo jisse saare elements equal ho jayein.
+Agar possible nahi hai toh -1 return karo.
+
+---
+
+## Key Observations
+
+### 1. Kab impossible hai?
+Agar kisi bhi do elements ka remainder (% x) alag hai toh
+unhe kabhi equal nahi bana sakte.
+```
+grid = [[3,1,2]], x = 2
+3%2=1, 1%2=1, 2%2=0 → alag remainder → return -1
+```
+
+### 2. Kaunsi value pe sabko laayein? → MEDIAN
+Median pe laane se minimum operations lagte hain.
+Mean use nahi kar sakte kyunki elements integers rehne chahiye.
+
+### 3. Operations count
+```
+operations = abs(element - median) / x
+```
+
+---
+
+## Approach
+1. Grid flatten karo ek 1D array mein
+2. Remainder check karo — alag hai toh -1
+3. Array sort karo
+4. Median nikalo → arr[size/2]
+5. Har element ke liye abs(ele - median) / x add karo
+
+---
+
+## Bugs I Faced 🐛
+
+### Bug 1 — Flatten loop galat tha
+```cpp
+// ❌ Wrong
+for(auto ele : grid){
+    arr[ele] = grid[ele][ele]; // ele ek row(vector) hai, number nahi!
+}
+
+// ✅ Fixed
+int idx = 0;
+for(int i = 0; i < m; i++)
+    for(int j = 0; j < n; j++)
+        arr[idx++] = grid[i][j];
+```
+
+### Bug 2 — Remainder check sirf m tak tha (main bug!)
+```cpp
+// ❌ Wrong — m=1 tha toh sirf 1 element check hua!
+for(int i = 0; i < m; i++)
+    if(arr[i] % x != rem) return -1;
+
+// ✅ Fixed — poora array check karo
+for(auto ele : arr)
+    if(ele % x != rem) return -1;
+```
+
+### Bug 3 — Operations accumulate nahi ho rahi thi
+```cpp
+// ❌ Wrong
+int op;                        // initialize nahi kiya
+op = (ele - median) / x;      // += nahi, overwrite ho raha tha
+
+// ✅ Fixed
+int op = 0;
+op += abs((ele - median) / x); // abs() aur += dono zaroori!
+```
+
+---
+
+## What I Learned
+- 2D grid flatten karte waqt loop hamesha `m*n` tak hona chahiye
+- `auto ele : grid` mein ele poori row hoti hai, element nahi
+- Accumulate karna ho toh `+=` use karo, `=` nahi
+- Variables hamesha initialize karo (`int op = 0`)
+- Median minimum absolute deviation deta hai — isliye mean nahi
+
+---
+
+## Solution
+
+```cpp
+class Solution {
+public:
+    int minOperations(vector<vector<int>>& grid, int x) {
+        int m = grid.size();
+        int n = grid[0].size();
+        vector<int> arr(m * n);
+        int indx = 0;
+        
+        for(int i = 0; i < m; i++)
+            for(int j = 0; j < n; j++)
+                arr[indx++] = grid[i][j];
+        
+        int rem = arr[0] % x;
+        for(auto ele : arr)
+            if(ele % x != rem)
+                return -1;
+        
+        sort(arr.begin(), arr.end());
+        int median = arr[arr.size() / 2];
+        
+        int op = 0;
+        for(auto ele : arr)
+            op += abs((ele - median) / x);
+        
+        return op;
+    }
+};
+```
+
+---
+
+## Complexity
+- **Time:** O(m×n log m×n) — sorting ki wajah se
+- **Space:** O(m×n) — flatten array
+
+---
