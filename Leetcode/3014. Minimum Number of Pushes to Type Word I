@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int minimumPushes(string word) {
+        int n=word.size();
+        unordered_map<int,int>freq;
+        vector<int>ans;
+        if(word.size() <= 8){
+            return word.size();
+        }
+        for(int i=0;i<n;i++){
+            freq[word[i]]++;
+        }
+        for(auto f:freq){
+           ans.push_back(f.second);
+        }
+        sort(ans.begin(),ans.end(),greater<int>());
+        int cost=0;
+        for(int i=0;i<n;i++){
+            int layer=(i/8)+1;
+            cost+=ans[i]*layer;
+
+        }
+        return cost;
+    }
+};
